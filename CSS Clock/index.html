@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JS + CSS Clock</title>
+  </head>
+  <body>
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand min-hand"></div>
+        <div class="hand second-hand"></div>
+      </div>
+    </div>
+
+    <style>
+      html {
+        background: #091921;
+        font-family: "helvetica neue";
+        text-align: center;
+        font-size: 10px;
+      }
+
+      body {
+        margin: 0;
+        font-size: 2rem;
+        display: flex;
+        flex: 1;
+        min-height: 100vh;
+        align-items: center;
+      }
+
+      .clock {
+        width: 30rem;
+        height: 30rem;
+
+        border: 4px solid #091921;
+        background: white url("./clock.png");
+        background-size: cover;
+        border-radius: 50%;
+        box-shadow: 0 -15px 15px rgba(255, 255, 255, 0.05),
+          inset 0 -15px 15px rgba(255, 255, 255, 0.05),
+          0 15px 15px rgba(0, 0, 0, 0.3), inset 0 15px 15px rgba(0, 0, 0, 0.3);
+
+        margin: 50px auto;
+        position: relative;
+        padding: 2rem;
+      }
+
+      .clock-face {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform: translateY(
+          -3px
+        ); /* account for the height of the clock hands */
+      }
+
+      .clock-face::before {
+        content: "";
+
+        width: 15px;
+        height: 15px;
+
+        background: #091921;
+        border-radius: 50%;
+
+        position: absolute;
+        top: 48%;
+        left: 48%;
+        z-index: 1000;
+      }
+
+      .hand {
+        width: 50%;
+        height: 6px;
+        background: black;
+        position: absolute;
+        top: 50%;
+
+        border-radius: 6px 6px 0;
+
+        transform-origin: 100%; /* Set Rotation Origin to the far right end of the hand (clock center), i.e 100% along the X direction, by default it set to 50% (Center of hand) */
+        transform: rotate(
+          90deg
+        ); /* Offset Hands by 90 deg to start at 12 Clock */
+      }
+
+      .hour-hand {
+        background-color: #ff105e;
+      }
+
+      .min-hand {
+        background-color: rgb(0, 0, 0);
+      }
+
+      .second-hand {
+        background-color: #0AF;
+      }
+
+    </style>
+
+    <script>
+      const hourHand = document.querySelector(".hour-hand");
+      const minuteHand = document.querySelector(".min-hand");
+      const secondHand = document.querySelector(".second-hand");
+
+      function setDate() {
+        const currentDate = new Date();
+
+        const hour = currentDate.getHours();
+        const minutes = currentDate.getMinutes();
+        const seconds = currentDate.getSeconds();
+
+        const secondsDegree = (seconds / 60) * 360 + 90;
+        secondHand.style.transform = `rotate(${secondsDegree}deg)`;
+
+        const minutesDegree = (minutes / 60) * 360 + 90;
+        minuteHand.style.transform = `rotate(${minutesDegree}deg)`;
+
+        const hourDegree = (hour / 12) * 360 + 90;
+        hourHand.style.transform = `rotate(${hourDegree}deg)`;
+      }
+
+      setInterval(setDate, 1000);
+    </script>
+  </body>
+</html>
