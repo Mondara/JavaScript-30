@@ -1,19 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HTML5 Canvas</title>
-</head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-</script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const canvas = document.querySelector("#draw"); // Select Canvas
+      const ctx = canvas.getContext("2d");
 
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+      canvas.width = window.innerWidth; // Set Canvas width to window width
+      canvas.height = window.innerHeight; // Set Canvas height to window height
 
-</body>
+      ctx.strokeStyle = "#BADASS"; // Color
+      ctx.lineJoin = "round"; // When a Line meets another Line
+      ctx.lineCap = "round"; // Line End (set to be round)
+      ctx.lineWidth = 100; // Line Width
+
+      let isDrawing = false; // Drawing Flag
+      let lastX = 0; // Ending X Pos of Mouse/line
+      let lastY = 0; // Ending Y Pos of Mouse/line
+      let hue = 0; // Line Color hue
+      let incrementDirection = true; // hue and line width increment direction (++ or --)
+
+      function draw(e) {
+        if (!isDrawing) return; // Stop if not Drawing (mousedown)
+
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`; // Set Line Color
+
+        ctx.beginPath(); // Start Drawing
+        // Start From
+        ctx.moveTo(lastX, lastY);
+        // Go To
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+
+        hue++;
+        if(hue >= 360) {
+          hue = 0; 
+        }
+
+        if(ctx.lineWidth >= 100 || ctx.lineWidth <= 20) {
+          incrementDirection = !incrementDirection;
+        }
+
+        if(incrementDirection) {
+          ctx.lineWidth++;
+        } else {
+          ctx.lineWidth--;
+        }
+      }
+
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+      });
+      canvas.addEventListener("mouseup", () => (isDrawing = false));
+      canvas.addEventListener("mouseout", () => (isDrawing = false)); // if mouse goes out of canvas stop drawing
+
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+    </style>
+  </body>
 </html>
