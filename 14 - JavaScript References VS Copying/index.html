@@ -8,13 +8,28 @@
 
   <script>
     // start with strings, numbers and booleans
+    let age = 100;
+    let age2 = age; // ag2 has the value of age (100)
+    console.log(age, age2);
+    age = 200;
+    console.log(age, age2); // age = 200, age2 = 100
+
+    let name = 'Wes';
+    let name2 = name; // name2 has the value of name (is not a referance to name)
+    console.log(name, name2); // name, name2 = 'Wes'
+    name = 'wesley';
+    console.log(name, name2); // name = 'wesley', name2='Wes'
+
 
     // Let's say we have an array
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
 
     // and we want to make a copy of it.
+    const team = players; // team is a REFERANCE to players array
 
     // You might think we can just do something like this:
+    team[3] = 'Lux'; // Edits  players Array
+    console.log(players, team); // OUTPUT: ['Wes', 'Sarah', 'Ryan', 'Lux'], ['Wes', 'Sarah', 'Ryan', 'Lux']
 
     // however what happens when we update that array?
 
@@ -27,12 +42,20 @@
     // So, how do we fix this? We take a copy instead!
 
     // one way
+    const team2 = players.slice();
 
     // or create a new array and concat the old one in
+    const team3 = [].concat(players);
 
     // or use the new ES6 Spread
+    const team4 = [...players];
 
     // now when we update it, the original one isn't changed
+    team4[3] = 'Lux';
+    console.log(team4, players); // OUTPUT: ['Wes', 'Sarah', 'Ryan', 'Lux'], ['Wes', 'Sarah', 'Ryan', 'Poppy']
+
+    // Another Method:
+    const team5 = Array.from(players);
 
     // The same thing goes for objects, let's say we have a person object
 
@@ -43,12 +66,20 @@
     };
 
     // and think we make a copy:
+    const captin = person; // Captin is a referance not a copy of person object
+    captain.number = 99; // Editing the person object
+    console.log(person);
 
     // how do we take a copy instead?
+    // A Shallow Copy i.e only 1 level deep
+    const cap2 = Object.assign({}, person, {number: 99}) // Last argument is the values you want to change in given object, 
+    console.log(cap2);
 
     // We will hopefully soon see the object ...spread
+    const cap3 = {...person}; // A Shallow Copy i.e only 1 level deep
 
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+    const dev2 = JSON.parse(JSON.stringify(wes)); // A Poor Man's Deep Clone
 
   </script>
 
