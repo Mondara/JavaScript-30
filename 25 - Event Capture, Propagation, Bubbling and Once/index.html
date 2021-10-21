@@ -42,6 +42,21 @@
 
 <button></button>
 <script>
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+
+  function logText(e) {
+    console.log(this.classList.value);
+    e.stopPropagation(); // stop bubbling
+  }
+
+  // A click on div three will also a mean a click on div two, div one, body, html page, etc, because they wrap .
+  // This is known as bubbling
+  divs.forEach(div => div.addEventListener('click', logText, { capture: false, once: true}));
+  // once option means it event listener will only run once and unbind itself (i.e removeEventListener())
+
+  // Example use case of once option (button)
+  button.addEventListener('click', () => console.log('Click!!!'), { once: true });
 
 </script>
 </body>
